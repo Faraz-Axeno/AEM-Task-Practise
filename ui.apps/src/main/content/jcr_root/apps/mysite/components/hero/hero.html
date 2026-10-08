@@ -1,0 +1,23 @@
+<sly data-sly-use.model="com.mysite.core.models.HeroModel"></sly>
+
+<div class="hero">
+    <div class="hero-content">
+
+        <h1 class="hero-title">${model.title}</h1>
+
+        <p class="hero-description">
+            ${model.description}
+        </p>
+
+        <a class="hero-button"
+           href="${model.buttonLink}">
+            ${model.buttonText}
+        </a>
+
+    </div>
+
+    <div class="hero-image">
+        <img src="${model.imagePath}"
+             alt="${model.imageAlt}">
+    </div>
+</div>
