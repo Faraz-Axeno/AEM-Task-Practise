@@ -1,0 +1,25 @@
+<sly data-sly-use.clientlib="core/wcm/components/commons/v1/templates/clientlib.html">
+    <sly data-sly-call="${clientlib.all @ categories='mysite.teamdetails'}"/>
+</sly>
+
+<div class="cmp-teamdetails" data-cmp-is="teamdetails">
+    <sly data-sly-list.child="${resource.children}">
+        <sly data-sly-test="${child.name == 'teamMembers'}">
+            <div class="cmp-teamdetails__grid" data-sly-list.member="${child.children}">
+                <div class="cmp-teamdetails__member">
+                    <img class="cmp-teamdetails__photo" src="${member.properties.photo}" alt="${member.properties.name}" data-sly-test="${member.properties.photo}"/>
+                    <div class="cmp-teamdetails__info">
+                        <div class="cmp-teamdetails__name">${member.properties.name}</div>
+                        <div class="cmp-teamdetails__role">${member.properties.role}</div>
+                        <button class="cmp-teamdetails__toggle-role">Toggle Role</button>
+                    </div>
+                </div>
+            </div>
+        </sly>
+    </sly>
+    
+    <sly data-sly-test="${wcmmode.edit && !properties['teamMembers/item0/name']}">
+        <div class="cq-placeholder" data-emptytext="Team Details Component"></div>
+    </sly>
+</div>
+
