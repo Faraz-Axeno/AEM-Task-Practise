@@ -1,0 +1,59 @@
+.cmp-cityweather {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    padding: 16px;
+    max-width: 340px;
+}
+
+.cmp-cityweather__card {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e1e4e8;
+    padding: 20px;
+}
+
+.cmp-cityweather__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.cmp-cityweather__city {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #24292e;
+}
+
+.cmp-cityweather__status {
+    font-size: 0.85rem;
+    color: #6a737d;
+}
+
+.cmp-cityweather__main {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #0366d6;
+    margin-bottom: 8px;
+}
+
+.cmp-cityweather__desc {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: normal;
+    color: #586069;
+    text-transform: capitalize;
+}
+
+.cmp-cityweather__details {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 0.85rem;
+    color: #586069;
+    border-top: 1px solid #eaecef;
+    padding-top: 10px;
+    margin-top: 10px;
+}
+
