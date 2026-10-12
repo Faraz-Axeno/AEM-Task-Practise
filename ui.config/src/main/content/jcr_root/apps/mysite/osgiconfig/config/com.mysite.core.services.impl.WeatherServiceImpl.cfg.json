@@ -1,0 +1,5 @@
+{
+  "apiKey": "$[env:OPENWEATHER_API_KEY;default=]",
+  "apiUrl": "https://api.openweathermap.org/data/2.5/weather"
+}
+

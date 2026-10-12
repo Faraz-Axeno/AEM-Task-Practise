@@ -4,7 +4,6 @@
         widgets.forEach(function(el) {
             el.setAttribute("data-weather-init", "true");
             var city = el.getAttribute("data-city");
-            var apiKey = el.getAttribute("data-api-key");
             var statusEl = el.querySelector(".cmp-cityweather__status");
             var bodyEl = el.querySelector(".cmp-cityweather__body");
             var tempEl = el.querySelector(".cmp-cityweather__temp");
@@ -15,37 +14,24 @@
 
             if (!city) return;
 
-            var url = apiKey 
-                ? "https://api.openweathermap.org/data/2.5/weather?q=" + encodeURIComponent(city) + "&appid=" + encodeURIComponent(apiKey) + "&units=metric"
-                : "https://wttr.in/" + encodeURIComponent(city) + "?format=j1";
+            // Secure internal servlet endpoint (API key is kept hidden in OSGi backend)
+            var url = "/bin/mysite/weather?city=" + encodeURIComponent(city);
 
             fetch(url)
                 .then(function(res) {
-                    if (!res.ok) throw new Error("API error: " + res.status);
+                    if (!res.ok) throw new Error("Server responded with status " + res.status);
                     return res.json();
                 })
                 .then(function(data) {
-                    var temp, desc, humidity, wind, feels;
-                    if (apiKey) {
-                        temp = Math.round(data.main.temp);
-                        desc = data.weather && data.weather[0] ? data.weather[0].description : "";
-                        humidity = data.main.humidity;
-                        wind = Math.round(data.wind.speed * 3.6);
-                        feels = Math.round(data.main.feels_like);
-                    } else {
-                        var curr = data.current_condition && data.current_condition[0] ? data.current_condition[0] : {};
-                        temp = curr.temp_C;
-                        desc = curr.weatherDesc && curr.weatherDesc[0] ? curr.weatherDesc[0].value.trim() : "";
-                        humidity = curr.humidity;
-                        wind = curr.windspeedKmph;
-                        feels = curr.FeelsLikeC;
+                    if (data.error) {
+                        throw new Error(data.error);
                     }
 
-                    if (tempEl) tempEl.textContent = temp;
-                    if (descEl) descEl.textContent = desc;
-                    if (humEl) humEl.textContent = humidity;
-                    if (windEl) windEl.textContent = wind;
-                    if (feelsEl) feelsEl.textContent = feels;
+                    if (tempEl && data.temp !== undefined) tempEl.textContent = data.temp;
+                    if (descEl && data.desc) descEl.textContent = data.desc;
+                    if (humEl && data.humidity !== undefined) humEl.textContent = data.humidity;
+                    if (windEl && data.wind !== undefined) windEl.textContent = data.wind;
+                    if (feelsEl && data.feels !== undefined) feelsEl.textContent = data.feels;
 
                     if (statusEl) statusEl.style.display = "none";
                     if (bodyEl) bodyEl.style.display = "block";
@@ -57,14 +43,14 @@
         });
     }
 
-    // Run immediately if DOM is already loaded, otherwise listen for DOMContentLoaded
+    // Run immediately if DOM is ready, otherwise wait for DOMContentLoaded
     if (document.readyState === "loading") {
         document.addEventListener("DOMContentLoaded", initWeather);
     } else {
         initWeather();
     }
 
-    // Support AEM authoring mode (dialog save / component refresh in Touch UI)
+    // AEM Authoring support (auto-initializes upon editing or dragging components)
     if (window.MutationObserver) {
         var observer = new MutationObserver(function() {
             initWeather();
